@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Draw, Modify, Snap } from 'ol/interaction';
+import { Draw, Modify, Snap } from "ol/interaction";
 import { Type } from "ol/geom/Geometry";
 import VectorSource from "ol/source/Vector";
 
@@ -9,7 +9,7 @@ import { addInteraction } from "./utils";
 type DrawInteractionProps = {
   source: VectorSource;
   drawTool: Type;
-}
+};
 
 export const DrawInteraction = ({ source, drawTool }: DrawInteractionProps) => {
   const { map } = useMapContext();
@@ -22,7 +22,7 @@ export const DrawInteraction = ({ source, drawTool }: DrawInteractionProps) => {
       type: drawTool,
     });
 
-    draw.set('name', 'Drawing');
+    draw.set("name", "Drawing");
     addInteraction(draw, map);
 
     const snap = new Snap({ source });
@@ -35,8 +35,8 @@ export const DrawInteraction = ({ source, drawTool }: DrawInteractionProps) => {
       map.removeInteraction(draw);
       map.removeInteraction(snap);
       map.removeInteraction(modify);
-    }
+    };
   }, [map, source, drawTool]);
 
   return null;
-}
+};

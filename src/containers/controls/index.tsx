@@ -3,7 +3,7 @@ import { useSyncContext } from "../sync-controller/sync-context";
 
 type ControlsProps = {
   children?: JSX.Element | JSX.Element[];
-}
+};
 
 export const Controls = ({ children }: ControlsProps) => {
   const { handleSyncLocked, syncLocked } = useSyncContext();
@@ -40,4 +40,4 @@ export const Controls = ({ children }: ControlsProps) => {
       </div>
     </div>
   );
-}
+};

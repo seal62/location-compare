@@ -5,9 +5,9 @@ import TileSource from "ol/source/Tile";
 import { MapContext } from "../map/map-context";
 
 type TileLayerProps = {
-  source: TileSource,
+  source: TileSource;
   zIndex?: number;
-}
+};
 
 export const TileLayer = ({ source, zIndex = 0 }: TileLayerProps) => {
   const { map } = useContext(MapContext);

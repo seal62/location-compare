@@ -9,9 +9,13 @@ type VectorLayerProps = {
   source: VectorSource;
   style?: Style;
   zIndex?: number;
-}
+};
 
-export const VectorLayer = ({ source, style, zIndex = 0 }: VectorLayerProps) => {
+export const VectorLayer = ({
+  source,
+  style,
+  zIndex = 0,
+}: VectorLayerProps) => {
   const { map } = useContext(MapContext);
 
   useEffect(() => {
@@ -19,7 +23,7 @@ export const VectorLayer = ({ source, style, zIndex = 0 }: VectorLayerProps) => 
 
     let vectorLayer = new OLVectorLayer({
       source,
-      style
+      style,
     });
 
     map.addLayer(vectorLayer);

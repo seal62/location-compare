@@ -1,24 +1,24 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as ol from "ol";
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat } from "ol/proj";
 import { Type } from "ol/geom/Geometry";
 
 import "./map.css";
 
-import { MapContext } from './map-context';
-import { DraggingInteraction } from '../interactions/dragging-interaction';
-import { useSyncContext } from '../sync-controller/sync-context';
-import { ZoomInteraction } from '../interactions/zoom-interaction';
-import { Layers } from '../layers';
-import { BaseLayer } from '../layers/base-layer';
-import { MapControls } from '../map-controls';
-import { Features } from '../features';
+import { MapContext } from "./map-context";
+import { DraggingInteraction } from "../interactions/dragging-interaction";
+import { useSyncContext } from "../sync-controller/sync-context";
+import { ZoomInteraction } from "../interactions/zoom-interaction";
+import { Layers } from "../layers";
+import { BaseLayer } from "../layers/base-layer";
+import { MapControls } from "../map-controls";
+import { Features } from "../features";
 
 import mapConfig from "../../config.json";
 
 type MapProps = {
   children?: JSX.Element | JSX.Element[];
-}
+};
 
 const INITIAL_ZOOM = 11;
 const INITIAL_CENTER = fromLonLat(mapConfig.center);
@@ -27,12 +27,15 @@ export const Map = ({ children }: MapProps) => {
   const { syncedCenter, syncedZoom, syncLocked } = useSyncContext();
   const mapRef = useRef<any>();
   const [map, setMap] = useState<ol.Map | null>(null);
-  const [mapId, setMapId] = useState('');
+  const [mapId, setMapId] = useState("");
   const [mapIsDragging, setMapIsDragging] = useState(false);
-  const [baseLayer, setBaseLayer] = useState('street');
+  const [baseLayer, setBaseLayer] = useState("street");
   const [drawTool, setDrawTool] = useState<Type>("Polygon");
 
-  const handleMapDragging = useCallback((dragging: boolean) => setMapIsDragging(dragging), []);
+  const handleMapDragging = useCallback(
+    (dragging: boolean) => setMapIsDragging(dragging),
+    []
+  );
 
   useEffect(() => {
     let options = {
@@ -67,7 +70,7 @@ export const Map = ({ children }: MapProps) => {
     if (syncedZoom.fromMapId !== mapId) {
       map.getView().setZoom(syncedZoom.zoom);
       // map.getView().animate({ zoom: syncedZoom.zoom })
-      console.log(mapId, syncedZoom.zoom, map ?.getView().getZoom())
+      console.log(mapId, syncedZoom.zoom, map?.getView().getZoom());
     }
   }, [syncedZoom, mapId, map, syncLocked]);
 
@@ -79,10 +82,13 @@ export const Map = ({ children }: MapProps) => {
         <Layers>
           <BaseLayer type={baseLayer} />
           <Features disabled={false} drawTool={drawTool} />
-          <MapControls handleSelectDrawTool={setDrawTool} handleSelectBaseLayer={setBaseLayer} />
+          <MapControls
+            handleSelectDrawTool={setDrawTool}
+            handleSelectBaseLayer={setBaseLayer}
+          />
         </Layers>
         {children}
       </div>
     </MapContext.Provider>
-  )
-}
+  );
+};

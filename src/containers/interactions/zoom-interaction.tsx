@@ -14,19 +14,22 @@ export const ZoomInteraction = () => {
   const { map } = useMapContext();
   const { syncZoom } = useSyncContext();
 
-  const handleZoomEvent = useCallback((evt: MapBrowserEvent<any>) => {
-    if (['wheel'].includes(evt.type)) {
-      // console.log('zoom', evt)
-      const zoom = evt.map.getView().getZoom();
-      const mapId = getUid(evt.map);
-      // console.log('zoom', zoom);
-      if (zoom) {
-        syncZoom(zoom, mapId);
+  const handleZoomEvent = useCallback(
+    (evt: MapBrowserEvent<any>) => {
+      if (["wheel"].includes(evt.type)) {
+        // console.log('zoom', evt)
+        const zoom = evt.map.getView().getZoom();
+        const mapId = getUid(evt.map);
+        // console.log('zoom', zoom);
+        if (zoom) {
+          syncZoom(zoom, mapId);
+        }
       }
-    }
 
-    return true;
-  }, [syncZoom]);
+      return true;
+    },
+    [syncZoom]
+  );
 
   useEffect(() => {
     if (!map) return;
@@ -35,9 +38,9 @@ export const ZoomInteraction = () => {
       handleEvent: (evt) => handleZoomEvent(evt),
     });
 
-    interaction.set('name', 'Zoom');
+    interaction.set("name", "Zoom");
     addInteraction(interaction, map);
   }, [map, handleZoomEvent]);
 
   return null;
-}
+};

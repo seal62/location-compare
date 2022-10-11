@@ -1,8 +1,8 @@
-import './App.css';
+import "./App.css";
 
-import { Map } from './containers/map';
+import { Map } from "./containers/map";
 import { Controls } from "./containers/controls";
-import { SyncProvider } from './containers/sync-controller';
+import { SyncProvider } from "./containers/sync-controller";
 
 // function addMarkers(lonLatArray: Coordinate[]) {
 //   var iconStyle = new Style({
@@ -25,7 +25,6 @@ import { SyncProvider } from './containers/sync-controller';
 // }
 
 function App() {
-
   return (
     <div>
       <div>
