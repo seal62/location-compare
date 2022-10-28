@@ -26,14 +26,14 @@ import { SyncProvider } from "./containers/sync-controller";
 
 function App() {
   return (
-    <div>
-      <div>
-        <SyncProvider>
+    <div className="app-container">
+      <SyncProvider>
+        <div className="map-container">
           <Map />
           <Map />
-          <Controls />
-        </SyncProvider>
-      </div>
+        </div>
+        <Controls />
+      </SyncProvider>
     </div>
   );
 }

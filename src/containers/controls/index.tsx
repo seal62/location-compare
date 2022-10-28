@@ -1,6 +1,8 @@
 import React from "react";
 import { useSyncContext } from "../sync-controller/sync-context";
 
+import "./controls.css";
+
 type ControlsProps = {
   children?: JSX.Element | JSX.Element[];
 };
@@ -9,7 +11,7 @@ export const Controls = ({ children }: ControlsProps) => {
   const { handleSyncLocked, syncLocked } = useSyncContext();
 
   return (
-    <div>
+    <div className="controls-container">
       {children}
       <div>
         <input
