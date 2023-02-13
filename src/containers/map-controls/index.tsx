@@ -1,3 +1,5 @@
+import { IconButton } from "@mui/material";
+import PolylineIcon from "@mui/icons-material/Polyline";
 import { Type } from "ol/geom/Geometry";
 import "./index.css";
 
@@ -12,15 +14,9 @@ export const MapControls = ({
 }: MapContextProps) => (
   <div className="map_controls">
     <div className="map_controls-drawing">
-      <select
-        onChange={(evt) =>
-          handleSelectDrawTool(evt.currentTarget.value as Type)
-        }
-      >
-        <option value="Polygon">Polygon</option>
-        <option value="Circle">Circle</option>
-        <option value="Point">Point</option>
-      </select>
+      <IconButton onClick={() => handleSelectDrawTool("Polygon")}>
+        <PolylineIcon />
+      </IconButton>
     </div>
     <div className="map_controls-layers">
       <button onClick={() => handleSelectBaseLayer("street")}>

@@ -1,3 +1,5 @@
+import { Map } from "ol";
+import { GeoJSON } from "ol/format";
 import * as olSource from "ol/source";
 // import VectorTileSource from 'ol/source/VectorTile';
 
@@ -10,13 +12,47 @@ function xyz({ url, attributions, maxZoom }: XYZ) {
   return new olSource.XYZ({ url, attributions, maxZoom });
 }
 
+const getGeojsonObject = (features: any[]) => ({
+  type: "FeatureCollection",
+  // crs: {
+  //   type: "name",
+  //   properties: {
+  //     name: "EPSG:3857",
+  //   },
+  // },
+  features,
+});
+
 type Vector = {
-  features?: any[];
+  map: Map | null;
 };
-function vector({ features }: Vector) {
-  return new olSource.Vector({
-    features,
-  });
+function vector({ map }: Vector) {
+  // console.log(features);
+
+  if (!map) {
+    return;
+  }
+
+  // const geoJsonFeatures =
+  //   features.length > 0
+  //     ? new GeoJSON().readFeatures(
+  //         getGeojsonObject(features),
+  //         // features
+  //         {
+  //           featureProjection: "EPSG:3857",
+  //         }
+  //       )
+  //     : [];
+  // console.log(geoJsonFeatures);
+  // console.log(geoJsonFeatures);
+  // const sourceFeatures = features.length > 0 ? geoJsonFeatures : [];
+  // const source = new olSource.Vector();
+  // source.addFeatures(geoJsonFeatures);
+  // return source;
+  // return new olSource.Vector({
+  //   features: sourceFeatures,
+  // });
+  return new olSource.Vector();
 }
 
 function osm() {

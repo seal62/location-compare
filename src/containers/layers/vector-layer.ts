@@ -34,7 +34,7 @@ export const VectorLayer = ({
         map.removeLayer(vectorLayer);
       }
     };
-  }, [map]);
+  }, [map, zIndex, style, source]);
 
   return null;
 };

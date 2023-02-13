@@ -12,18 +12,22 @@ import { addInteraction } from "./utils";
 
 export const ZoomInteraction = () => {
   const { map } = useMapContext();
-  const { syncZoom } = useSyncContext();
+  const { syncZoom, syncCenter } = useSyncContext();
 
   const handleZoomEvent = useCallback(
     (evt: MapBrowserEvent<any>) => {
       if (["wheel"].includes(evt.type)) {
-        // console.log('zoom', evt)
+        // console.log("zoom", evt);
         const zoom = evt.map.getView().getZoom();
+        const mapCenter = evt.map.getView().getCenter();
         const mapId = getUid(evt.map);
         // console.log('zoom', zoom);
         if (zoom) {
           syncZoom(zoom, mapId);
         }
+        // if (mapCenter) {
+        //   syncCenter(mapCenter);
+        // }
       }
 
       return true;

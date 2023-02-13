@@ -28,7 +28,7 @@ export const MapboxStreetLayer = ({ zIndex = 0 }: MapboxStreetLayerProps) => {
         map.removeLayer(tileLayer);
       }
     };
-  }, [map]);
+  }, [map, zIndex]);
 
   return null;
 };

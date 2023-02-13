@@ -6,13 +6,9 @@ import { useMapContext } from "../map/map-context";
 import { useSyncContext } from "../sync-controller/sync-context";
 import { addInteraction } from "./utils";
 
-type DraggingInteractionProps = {
-  handleMapDragging(dragging: boolean): void;
-};
+type DraggingInteractionProps = {};
 
-export const DraggingInteraction = ({
-  handleMapDragging,
-}: DraggingInteractionProps) => {
+export const DraggingInteraction = ({}: DraggingInteractionProps) => {
   const isDraggingRef = useRef(false);
   const { map } = useMapContext();
   const { syncCenter } = useSyncContext();
@@ -23,14 +19,14 @@ export const DraggingInteraction = ({
         // start dragging
         if (!isDraggingRef.current && evt.dragging) {
           isDraggingRef.current = true;
-          handleMapDragging(true);
+          // handleMapDragging(true);
           // console.log('start dragging', evt.coordinate)
         }
 
         // stop dragging
         if (isDraggingRef.current && !evt.dragging) {
           isDraggingRef.current = false;
-          handleMapDragging(false);
+          // handleMapDragging(false);
           // console.log('stop dragging')
         }
 
@@ -46,7 +42,7 @@ export const DraggingInteraction = ({
 
       return true;
     },
-    [syncCenter, handleMapDragging]
+    [syncCenter]
   );
 
   useEffect(() => {

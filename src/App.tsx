@@ -1,38 +1,39 @@
+import { useState, useRef, useCallback } from "react";
+import * as ol from "ol";
+import { fromLonLat } from "ol/proj";
+
 import "./App.css";
 
 import { Map } from "./containers/map";
-import { Controls } from "./containers/controls";
+import { Controls } from "./components/controls";
 import { SyncProvider } from "./containers/sync-controller";
+import mapConfig from "./config.json";
+import { IndependentMapContextProvider } from "./containers/map/independent-context";
 
-// function addMarkers(lonLatArray: Coordinate[]) {
-//   var iconStyle = new Style({
-//     image: new Icon({
-//       anchorXUnits: "fraction",
-//       anchorYUnits: "pixels",
-//       src: mapConfig.markerImage32,
-//     }),
-//   });
-
-//   let features = lonLatArray.map((item) => {
-//     let feature = new Feature({
-//       geometry: new Point(fromLonLat(item)),
-//     });
-//     feature.setStyle(iconStyle);
-//     return feature;
-//   });
-
-//   return features;
-// }
+const INITIAL_ZOOM = 11;
+const INITIAL_CENTER = fromLonLat(mapConfig.center);
 
 function App() {
+  const [showSyncMap, setShowSyncMap] = useState(false);
+  const view = useRef<ol.View>(
+    new ol.View({ zoom: INITIAL_ZOOM, center: INITIAL_CENTER })
+  );
+
+  const handleMapChange = useCallback(
+    (_: any, newValue: boolean) => setShowSyncMap(newValue),
+    []
+  );
+
   return (
     <div className="app-container">
       <SyncProvider>
         <div className="map-container">
-          <Map />
-          <Map />
+          <IndependentMapContextProvider>
+            <Map view={view.current} />
+            {showSyncMap ? <Map view={view.current} /> : <Map independentMap />}
+          </IndependentMapContextProvider>
         </div>
-        <Controls />
+        <Controls active={showSyncMap} handleChange={handleMapChange} />
       </SyncProvider>
     </div>
   );

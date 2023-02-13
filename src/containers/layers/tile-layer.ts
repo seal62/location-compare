@@ -28,7 +28,7 @@ export const TileLayer = ({ source, zIndex = 0 }: TileLayerProps) => {
         map.removeLayer(tileLayer);
       }
     };
-  }, [map]);
+  }, [map, zIndex, source]);
 
   return null;
 };
