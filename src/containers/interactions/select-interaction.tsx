@@ -7,19 +7,24 @@ import { Feature } from "ol";
 
 type SelectInteractionProps = {
   drawTool: Type | undefined;
-  selectedFeatures: Feature[];
+  // selectedFeatures: Feature[];
+  onSelection(selected: Feature[], deselected: Feature[]): void;
 };
 
 export const SelectInteraction = ({
   drawTool,
-  selectedFeatures,
+  // selectedFeatures,
+  onSelection,
 }: SelectInteractionProps) => {
   const { map } = useMapContext();
 
-  const handleOnSelect = useCallback((selection: any) => {
-    const { selected, deselected } = selection as SelectEvent;
-    console.log(selected);
-  }, []);
+  const handleOnSelect = useCallback(
+    (selection: any) => {
+      const { selected, deselected } = selection as SelectEvent;
+      onSelection(selected, deselected);
+    },
+    [onSelection]
+  );
 
   useEffect(() => {
     if (!map) return;

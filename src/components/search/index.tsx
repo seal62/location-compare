@@ -30,7 +30,8 @@ export const SearchLayout = ({
 }: SearchLayoutProps) => (
   <Box className="search">
     <TextField
-      variant="outlined"
+      className="search-input"
+      // variant="outlined"
       label="Search..."
       InputProps={{
         endAdornment: (

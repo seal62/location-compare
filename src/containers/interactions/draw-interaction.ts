@@ -3,16 +3,18 @@ import { GeoJSON } from "ol/format";
 import { Draw, Modify, Snap } from "ol/interaction";
 import { Type } from "ol/geom/Geometry";
 import VectorSource from "ol/source/Vector";
+import { DrawEvent } from "ol/interaction/Draw";
+import { GeoJSONFeature } from "ol/format/GeoJSON";
+import { v4 as uuidv4 } from "uuid";
 
 import { useMapContext } from "../map/map-context";
 import { addInteraction } from "./utils";
-import { DrawEvent } from "ol/interaction/Draw";
-import { GeoJSONFeature } from "ol/format/GeoJSON";
+import { Feature } from "ol";
 
 type DrawInteractionProps = {
   source: VectorSource;
   drawTool: Type | undefined;
-  onDrawEnd(feature: any): void;
+  onDrawEnd(feature: Feature): void;
 };
 
 export const DrawInteraction = ({
@@ -29,7 +31,8 @@ export const DrawInteraction = ({
       // write feature to geojson
       const feature: GeoJSONFeature = writer.writeFeatureObject(evt.feature);
 
-      onDrawEnd(feature);
+      evt.feature.setProperties({ id: uuidv4() });
+      onDrawEnd(evt.feature);
     },
     [onDrawEnd]
   );

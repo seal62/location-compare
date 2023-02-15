@@ -10,7 +10,7 @@ import { MapContext } from "./map-context";
 // import { useSyncContext } from "../sync-controller/sync-context";
 // import { ZoomInteraction } from "../interactions/zoom-interaction";
 import { Layers } from "../layers";
-import { BaseLayer } from "../layers/base-layer";
+import { BaseLayer, BaseLayers } from "../layers/base-layer";
 import { MapControls } from "../map-controls";
 import { Features } from "../features";
 import { useIndependentMapContext } from "./independent-context";
@@ -26,14 +26,14 @@ export const Map = ({ children, view }: MapProps) => {
   // const { syncedCenter, syncedZoom, syncLocked } = useSyncContext();
   const mapRef = useRef<any>();
   const [map, setMap] = useState<ol.Map | null>(null);
-  const [baseLayer, setBaseLayer] = useState("street");
+  const [baseLayer, setBaseLayer] = useState<BaseLayers>(BaseLayers.Street);
   const [drawTool, setDrawTool] = useState<Type>();
-  const [features, setFeatures] = useState<any[]>([]);
+  const [features, setFeatures] = useState<ol.Feature[]>([]); // TODO - do we need this?!
 
   const { zoom, position } = useIndependentMapContext();
 
   const handleDrawEnd = useCallback(
-    (feature: any) => setFeatures((state) => [...state, feature]),
+    (feature: ol.Feature) => setFeatures((state) => [...state, feature]),
     []
   );
 
@@ -52,6 +52,14 @@ export const Map = ({ children, view }: MapProps) => {
   const handleSelectDrawTool = useCallback(
     (tool: Type) => setDrawTool((state) => (state === tool ? undefined : tool)),
     []
+  );
+
+  const handleSelectBaseLayer = useCallback(
+    (selectedBaseLayer: BaseLayers) => {
+      if (selectedBaseLayer === baseLayer) return;
+      setBaseLayer(selectedBaseLayer);
+    },
+    [baseLayer]
   );
 
   useEffect(() => {
@@ -78,18 +86,19 @@ export const Map = ({ children, view }: MapProps) => {
     <MapContext.Provider value={{ map }}>
       {/* <DraggingInteraction /> */}
       {/* <ZoomInteraction /> */}
-      <div ref={mapRef} className="ol-map">
+      <div ref={mapRef} className="ol-map" tabIndex={0}>
         <Layers>
           <BaseLayer type={baseLayer} />
           <Features
             disabled={false}
             drawTool={drawTool}
-            features={features}
             onDrawEnd={handleDrawEnd}
           />
           <MapControls
+            selectedTool={drawTool}
+            activeBaseLayer={baseLayer}
             handleSelectDrawTool={handleSelectDrawTool}
-            handleSelectBaseLayer={setBaseLayer}
+            handleSelectBaseLayer={handleSelectBaseLayer}
           />
           <Search setLocation={handleSetLocation} />
         </Layers>
