@@ -1,6 +1,7 @@
 import { Map } from "ol";
 import { GeoJSON } from "ol/format";
 import * as olSource from "ol/source";
+import { getMapTilerKey } from "../../utils";
 // import VectorTileSource from 'ol/source/VectorTile';
 
 type XYZ = {
@@ -59,11 +60,8 @@ function osm() {
   return new olSource.OSM();
 }
 
-// 'sk.eyJ1IjoibGRlbm5pczE5ODciLCJhIjoiY2xlODJjdXhtMDF5NTNvcWd1ZmZobjVnMCJ9.xz_kG1ohZlxi-T5U0a3Ivg'
-
 function mapboxSatellite() {
-  const key =
-    "sk.eyJ1IjoibGRlbm5pczE5ODciLCJhIjoiY2xlODJjdXhtMDF5NTNvcWd1ZmZobjVnMCJ9.xz_kG1ohZlxi-T5U0a3Ivg";
+  const key = "";
   return new olSource.XYZ({
     attributions:
       "'© <a href=\"https://www.mapbox.com/map-feedback/\">Mapbox</a>'",
@@ -75,4 +73,36 @@ function mapboxSatellite() {
   });
 }
 
-export { vector, xyz, osm, mapboxSatellite };
+function mapTilerSatellite() {
+  const key = getMapTilerKey();
+  return new olSource.XYZ({
+    // eslint-disable-next-line prettier/prettier
+    attributions: "<a href=\"https://www.maptiler.com/\">&copy; MapTiler</a>",
+    url:
+      "https://api.maptiler.com/tiles/satellite/" +
+      "{z}/{x}/{y}.jpg?key=" +
+      key,
+    crossOrigin: "jpg",
+  });
+}
+
+function mapTilerOpenMapTiles() {
+  const key = getMapTilerKey();
+  return new olSource.XYZ({
+    // eslint-disable-next-line prettier/prettier
+    attributions: "<a href=\"https://www.maptiler.com/copyright/\" target=\"_blank\">&copy; MapTiler</a> <a href=\"https://www.openstreetmap.org/copyright\" target=\"_blank\">&copy; OpenStreetMap contributors</a>",
+    url:
+      "https://api.maptiler.com/tiles/v3-openmaptiles/" +
+      "{z}/{x}/{y}.pbf?key=" +
+      key,
+  });
+}
+
+export {
+  vector,
+  xyz,
+  osm,
+  mapboxSatellite,
+  mapTilerSatellite,
+  mapTilerOpenMapTiles,
+};

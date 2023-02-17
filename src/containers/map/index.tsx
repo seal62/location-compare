@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import * as ol from "ol";
 import { fromLonLat } from "ol/proj";
 import { Type } from "ol/geom/Geometry";
+import { defaults as defaultControls } from "ol/control";
 
 import "./map.css";
 
@@ -63,10 +64,11 @@ export const Map = ({ children, view }: MapProps) => {
   );
 
   useEffect(() => {
+    const controls = defaultControls({ zoom: false, rotate: false });
     let options = {
       view: view || new ol.View({ zoom, center: position }),
       layers: [],
-      controls: [],
+      controls,
       overlays: [],
     };
     let mapObject = new ol.Map(options);
@@ -88,7 +90,7 @@ export const Map = ({ children, view }: MapProps) => {
       {/* <ZoomInteraction /> */}
       <div ref={mapRef} className="ol-map" tabIndex={0}>
         <Layers>
-          <BaseLayer type={baseLayer} />
+          <BaseLayer type={baseLayer} map={map} />
           <Features
             disabled={false}
             drawTool={drawTool}

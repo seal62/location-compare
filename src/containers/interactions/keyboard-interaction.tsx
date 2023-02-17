@@ -17,9 +17,9 @@ class KeyboardEventInteraction extends Interaction {
         this.dispatchEvent("delete");
       }
 
-      if (stopEvent) {
-        keyEvent.preventDefault();
-      }
+      // if (stopEvent) {
+      //   keyEvent.preventDefault();
+      // }
     }
 
     return !stopEvent;

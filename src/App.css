@@ -2,17 +2,31 @@
   height: 100vh;
 }
 
-.app-container {
+
+
+.landscape.app-container {
   height: 100%;
   display: grid;
   grid-template-columns: 5fr 1fr;
 }
-
-.map-container {
+.landscape.map-container {
   margin: 1rem;
   flex: 1;
   display: grid;
   grid-template-rows: 1fr 1fr;
+  row-gap: 2rem;
+}
+
+.portrait.app-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+}
+.portrait.map-container {
+  margin: 1rem;
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   row-gap: 2rem;
 }
 

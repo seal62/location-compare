@@ -13,8 +13,7 @@ export const MapboxStreetLayer = ({ zIndex = 0 }: MapboxStreetLayerProps) => {
   useEffect(() => {
     if (!map) return;
 
-    const key =
-      "sk.eyJ1IjoibGRlbm5pczE5ODciLCJhIjoiY2xlODJjdXhtMDF5NTNvcWd1ZmZobjVnMCJ9.xz_kG1ohZlxi-T5U0a3Ivg";
+    const key = "";
     const tileLayer = new MapboxVectorLayer({
       accessToken: key,
       styleUrl: "mapbox://styles/mapbox/streets-v11",
