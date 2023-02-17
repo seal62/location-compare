@@ -59,9 +59,11 @@ function osm() {
   return new olSource.OSM();
 }
 
+// 'sk.eyJ1IjoibGRlbm5pczE5ODciLCJhIjoiY2xlODJjdXhtMDF5NTNvcWd1ZmZobjVnMCJ9.xz_kG1ohZlxi-T5U0a3Ivg'
+
 function mapboxSatellite() {
   const key =
-    "sk.eyJ1IjoibGRlbm5pczE5ODciLCJhIjoiY2w4bDdyb293MDAwdzNubnM2endzaDE0YSJ9.2XU1SPS3Y-BHA7fVxWmsAA";
+    "sk.eyJ1IjoibGRlbm5pczE5ODciLCJhIjoiY2xlODJjdXhtMDF5NTNvcWd1ZmZobjVnMCJ9.xz_kG1ohZlxi-T5U0a3Ivg";
   return new olSource.XYZ({
     attributions:
       "'© <a href=\"https://www.mapbox.com/map-feedback/\">Mapbox</a>'",
@@ -71,7 +73,6 @@ function mapboxSatellite() {
       key,
     crossOrigin: "jpg",
   });
-  // https://api.mapbox.com/v4/mapbox.satellite/1/0/0@2x.jpg90
 }
 
 export { vector, xyz, osm, mapboxSatellite };
