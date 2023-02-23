@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import * as ol from "ol";
 import { fromLonLat } from "ol/proj";
 
@@ -19,17 +19,33 @@ enum Layout {
   Portrait = "portrait",
 }
 
+export enum SecondMapType {
+  Independent,
+  Syncd,
+  SyncdZoom,
+}
+
 function App() {
-  const [showSyncMap, setShowSyncMap] = useState(false);
+  const [secondMapType, setShowSyncMap] = useState(SecondMapType.SyncdZoom);
   const [layout, setLayout] = useState(Layout.Portrait);
   const view = useRef<ol.View>(
     new ol.View({ zoom: INITIAL_ZOOM, center: INITIAL_CENTER })
   );
 
   const handleMapChange = useCallback(
-    (_: any, newValue: boolean) => setShowSyncMap(newValue),
+    (_: any, newValue: SecondMapType) => setShowSyncMap(newValue),
     []
   );
+
+  const secondMap = useMemo(() => {
+    if (secondMapType === SecondMapType.Syncd) {
+      return <Map view={view.current} mapType={SecondMapType.Syncd} />;
+    }
+    if (secondMapType === SecondMapType.SyncdZoom) {
+      return <Map mapType={SecondMapType.SyncdZoom} />;
+    }
+    return <Map mapType={SecondMapType.Independent} />;
+  }, [secondMapType]);
 
   useEffect(() => {
     const debouncedHandleResize = debounce(function handleResize() {
@@ -39,7 +55,10 @@ function App() {
     }, 500);
 
     window.addEventListener("resize", debouncedHandleResize);
-    debouncedHandleResize();
+
+    const newLayout =
+      window.innerWidth < 900 ? Layout.Landscape : Layout.Portrait;
+    setLayout(newLayout);
     return () => {
       window.removeEventListener("resize", debouncedHandleResize);
     };
@@ -50,11 +69,18 @@ function App() {
       <SyncProvider>
         <div className={`${layout} map-container`}>
           <IndependentMapContextProvider>
-            <Map view={view.current} />
-            {showSyncMap ? <Map view={view.current} /> : <Map independentMap />}
+            <Map
+              view={view.current}
+              mapType={
+                secondMapType === SecondMapType.SyncdZoom
+                  ? SecondMapType.SyncdZoom
+                  : undefined
+              }
+            />
+            {secondMap}
           </IndependentMapContextProvider>
         </div>
-        <Controls active={showSyncMap} handleChange={handleMapChange} />
+        <Controls active={secondMapType} handleChange={handleMapChange} />
       </SyncProvider>
     </div>
   );

@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from "react";
-import { GeoJSON } from "ol/format";
+// import { GeoJSON } from "ol/format";
 import { Draw, Modify, Snap } from "ol/interaction";
 import { Type } from "ol/geom/Geometry";
 import VectorSource from "ol/source/Vector";
 import { DrawEvent } from "ol/interaction/Draw";
-import { GeoJSONFeature } from "ol/format/GeoJSON";
+// import { GeoJSONFeature } from "ol/format/GeoJSON";
 import { v4 as uuidv4 } from "uuid";
 
 import { useMapContext } from "../map/map-context";
@@ -26,10 +26,10 @@ export const DrawInteraction = ({
 
   const handleDrawEnd = useCallback(
     (evt: DrawEvent) => {
-      console.log(evt);
-      const writer = new GeoJSON();
+      // console.log(evt);
+      // const writer = new GeoJSON();
       // write feature to geojson
-      const feature: GeoJSONFeature = writer.writeFeatureObject(evt.feature);
+      // const feature: GeoJSONFeature = writer.writeFeatureObject(evt.feature);
 
       evt.feature.setProperties({ id: uuidv4() });
       onDrawEnd(evt.feature);

@@ -7,24 +7,24 @@ import { defaults as defaultControls } from "ol/control";
 import "./map.css";
 
 import { MapContext } from "./map-context";
-// import { DraggingInteraction } from "../interactions/dragging-interaction";
-// import { useSyncContext } from "../sync-controller/sync-context";
-// import { ZoomInteraction } from "../interactions/zoom-interaction";
+import { useSyncContext } from "../sync-controller/sync-context";
+import { ZoomInteraction } from "../interactions/zoom-interaction";
 import { Layers } from "../layers";
 import { BaseLayer, BaseLayers } from "../layers/base-layer";
 import { MapControls } from "../map-controls";
 import { Features } from "../features";
 import { useIndependentMapContext } from "./independent-context";
 import { Search } from "../search";
+import { SecondMapType } from "../../App";
 
 type MapProps = {
   children?: JSX.Element | JSX.Element[];
   view?: ol.View;
-  independentMap?: boolean;
+  mapType?: SecondMapType;
 };
 
-export const Map = ({ children, view }: MapProps) => {
-  // const { syncedCenter, syncedZoom, syncLocked } = useSyncContext();
+export const Map = ({ children, view, mapType }: MapProps) => {
+  const { syncedZoom } = useSyncContext();
   const mapRef = useRef<any>();
   const [map, setMap] = useState<ol.Map | null>(null);
   const [baseLayer, setBaseLayer] = useState<BaseLayers>(BaseLayers.Street);
@@ -84,10 +84,18 @@ export const Map = ({ children, view }: MapProps) => {
 
   // if independentMap set position/zoom/features to context and use when remounting
 
+  useEffect(() => {
+    if (mapType !== SecondMapType.SyncdZoom || !map) return;
+
+    const mapId = ol.getUid(map);
+    if (mapId !== syncedZoom.fromMapId) {
+      map.getView().setZoom(syncedZoom.zoom);
+    }
+  }, [mapType, syncedZoom, map]);
+
   return (
     <MapContext.Provider value={{ map }}>
-      {/* <DraggingInteraction /> */}
-      {/* <ZoomInteraction /> */}
+      <ZoomInteraction active={mapType === SecondMapType.SyncdZoom} />
       <div ref={mapRef} className="ol-map" tabIndex={0}>
         <Layers>
           <BaseLayer type={baseLayer} map={map} />

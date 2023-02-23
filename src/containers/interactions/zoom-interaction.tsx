@@ -6,28 +6,25 @@ import { useMapContext } from "../map/map-context";
 import { useSyncContext } from "../sync-controller/sync-context";
 import { addInteraction } from "./utils";
 
-// type ZoomInteractionProps = {
-//   handleMapZooming(dragging: boolean): void;
-// }
+type ZoomInteractionProps = {
+  // handleMapZooming(dragging: boolean): void;
+  active: boolean;
+};
 
-export const ZoomInteraction = () => {
+export const ZoomInteraction = ({ active }: ZoomInteractionProps) => {
   const { map } = useMapContext();
-  const { syncZoom, syncCenter } = useSyncContext();
+  const { syncZoom } = useSyncContext();
 
   const handleZoomEvent = useCallback(
     (evt: MapBrowserEvent<any>) => {
       if (["wheel"].includes(evt.type)) {
         // console.log("zoom", evt);
         const zoom = evt.map.getView().getZoom();
-        const mapCenter = evt.map.getView().getCenter();
         const mapId = getUid(evt.map);
         // console.log('zoom', zoom);
         if (zoom) {
           syncZoom(zoom, mapId);
         }
-        // if (mapCenter) {
-        //   syncCenter(mapCenter);
-        // }
       }
 
       return true;
@@ -36,7 +33,7 @@ export const ZoomInteraction = () => {
   );
 
   useEffect(() => {
-    if (!map) return;
+    if (!map || !active) return;
 
     const interaction = new Interaction({
       handleEvent: (evt) => handleZoomEvent(evt),
@@ -44,7 +41,7 @@ export const ZoomInteraction = () => {
 
     interaction.set("name", "Zoom");
     addInteraction(interaction, map);
-  }, [map, handleZoomEvent]);
+  }, [map, handleZoomEvent, active]);
 
   return null;
 };
